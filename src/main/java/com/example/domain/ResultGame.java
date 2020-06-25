@@ -1,5 +1,7 @@
 package com.example.domain;
 
+import java.util.Date;
+
 /**
  * 試合結果を扱うドメイン.
  * 
@@ -29,17 +31,19 @@ public class ResultGame {
 	 */
 	private Integer score2;
 
+	private String winOrLose;
+
 	/**
 	 * 試合日程
 	 */
-	private String day;
+	private Date date;
 
-	public String getDay() {
-		return day;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setDay(String day) {
-		this.day = day;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public String getStadium() {
@@ -85,7 +89,7 @@ public class ResultGame {
 	@Override
 	public String toString() {
 		return "ResultGame [stadium=" + stadium + ", team1=" + team1 + ", team2=" + team2 + ", score1=" + score1
-				+ ", score2=" + score2 + ", day=" + day + "]";
+				+ ", score2=" + score2 + ", winOrLose=" + winOrLose + ", date=" + date + "]";
 	}
 
 }

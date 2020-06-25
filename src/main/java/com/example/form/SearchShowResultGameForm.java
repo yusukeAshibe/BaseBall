@@ -1,5 +1,7 @@
 package com.example.form;
 
+import java.util.Date;
+
 public class SearchShowResultGameForm {
 
 	private String date;

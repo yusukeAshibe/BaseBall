@@ -13,8 +13,14 @@ import org.springframework.stereotype.Repository;
 
 import com.example.domain.ResultGame;
 
+/**
+ * 試合結果情報を操作するレポジトリ.
+ * 
+ * @author ashibe
+ *
+ */
 @Repository
-public class ScrapeRepository {
+public class GameResultRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
@@ -25,7 +31,7 @@ public class ScrapeRepository {
 		resultGame.setTeam2(rs.getString("team2"));
 		resultGame.setScore1(rs.getInt("score1"));
 		resultGame.setScore2(rs.getInt("score2"));
-		resultGame.setDay(rs.getString("day"));
+		resultGame.setDate(rs.getDate("date"));
 		return resultGame;
 
 	};
@@ -39,7 +45,8 @@ public class ScrapeRepository {
 
 		for (ResultGame resultGame : resultGameList) {
 
-			String sql = "insert into result_game(stadium,team1,team2,score1,score2,day) values(:stadium,:team1,:team2,:score1,:score2,:day)";
+			String sql = "insert into result_games(stadium,team1,team2,score1,score2,date) "
+					+ "values(:stadium,:team1,:team2,:score1,:score2,:date)";
 			SqlParameterSource param = new BeanPropertySqlParameterSource(resultGame);
 			template.update(sql, param);
 
@@ -53,12 +60,27 @@ public class ScrapeRepository {
 	 * @param day
 	 * @return
 	 */
-	public List<ResultGame> ResultSearchByDay(String day) {
+	public List<ResultGame> ResultSearchByDay(Date day) {
 
-		String sql = "select * from result_game where day=:day";
-		SqlParameterSource param = new MapSqlParameterSource().addValue("day", day);
+		String sql = "select * from result_games where date=:date";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("date", day);
 		List<ResultGame> resultGameList = template.query(sql, param, RESULTGAME_ROW_MAPPER);
 		return resultGameList;
+
+	}
+
+	/**
+	 * チーム別に試合結果を取得.
+	 * 
+	 * @param teamName
+	 * @return
+	 */
+	public List<ResultGame> ResultSearchByTeamName(String teamName) {
+		String sql = "select * from result_games  where team1=:teamName or team2=:teamName";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("teamName", teamName);
+		List<ResultGame> teamResultList = template.query(sql, param, RESULTGAME_ROW_MAPPER);
+		System.out.println(sql);
+		return teamResultList;
 
 	}
 

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://wwww.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- css -->
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet"
+	integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+	crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous" />
+<!--  link rel="stylesheet" href="./mercari.css"/>-->
+<!-- script -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<STYLE type="text/css">
+<!--
+TABLE {
+	margin: auto;
+	top: 100px;
+	left: 100px;
+	height: 400px;
+	bottom: 100px;
+}
+-->
+</STYLE>
+
+</script>
+</head>
+<body>
+	<font size="5"><div style="text-align: center;"
+			th:text="${#dates.format(date,'yyyy年M月dd日')}+'現在の順位表'"></div></font>
+	<div style="text-align: center;">
+		<h2>セリーグの順位表</h2>
+
+		<table border="1">
+			<tbody>
+				<tr>
+					<th style="width: 50px;"><div style="text-align: center;">順位</div></th>
+					<th style="width: 150px;"><div style="text-align: center;">チーム名</div></th>
+					<th style="width: 50px;"><div style="text-align: center;">勝</div></th>
+					<th style="width: 50px;"><div style="text-align: center;">負</div></th>
+					<th style="width: 50px;"><div style="text-align: center;">分</div></th>
+					<th style="width: 70px;"><div style="text-align: center;">ゲーム差</div></th>
+
+
+				</tr>
+				<tr th:each="central:${centralLeagueRankingList}">
+					<td><div th:text="${central.rank}"></div></td>
+					<td><a th:text="${central.teamName}"
+						th:href="@{'/teamDetail/show?teamName='+${central.teamName}}"></a></td>
+					<td><div th:text="${central.win}"></div></td>
+					<td><div th:text="${central.lose}"></div></td>
+					<td><div th:text="${central.drow}"></div></td>
+					<td><div th:text="${central.Difference}"></div></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br>
+	<br>
+	<div style="text-align: center;">
+		<h2>パリーグの順位表</h2>
+		<table border="1">
+			<tbody>
+				<tr>
+					<th style="width: 50px;"><div style="text-align: center;">順位</div></th>
+					<th style="width: 150px;"><div style="text-align: center;">チーム名</div></th>
+					<th style="width: 50px;"><div style="text-align: center;">勝</div></th>
+					<th style="width: 50px;"><div style="text-align: center;">負</div></th>
+					<th style="width: 50px;"><div style="text-align: center;">分</div></th>
+					<th style="width: 70px;"><div style="text-align: center;">ゲーム差</div></th>
+
+
+				</tr>
+				<tr th:each="pacific:${pacificLeagueRankingList}">
+					<td><div th:text="${pacific.rank}"></div></td>
+					<td><a th:text="${pacific.teamName}"
+						th:href="@{'/teamDetail/show?teamName='+${pacific.teamName}}"></a></td>
+					<td><div th:text="${pacific.win}"></div></td>
+					<td><div th:text="${pacific.lose}"></div></td>
+					<td><div th:text="${pacific.drow}"></div></td>
+					<td><div th:text="${pacific.Difference}"></div></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br>
+	<br>
+
+</body>
+</html>

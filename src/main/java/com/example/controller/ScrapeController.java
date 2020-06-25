@@ -1,49 +1,53 @@
 package com.example.controller;
 
-import java.util.List;
+import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.domain.ResultGame;
-import com.example.form.SearchShowResultGameForm;
-import com.example.service.ScrapeService;
-import com.example.service.ShowResultGameService;
+import com.example.service.ScrapeRankService;
+import com.example.service.ScrapeResultGameService;
 
+/**
+ * スクレイピングの操作を行うコントローラー
+ * 
+ * @author ashibe
+ *
+ */
 @Controller
-@RequestMapping("/")
+@RequestMapping("/Scrape")
 public class ScrapeController {
 
 	@Autowired
-	private ScrapeService scrapeService;
+	private ScrapeRankService scrapeRankService;
 
 	@Autowired
-	private ShowResultGameService showResultGameService;
+	private ScrapeResultGameService scrapeResultGameService;
 
-	@ModelAttribute
-	private SearchShowResultGameForm setUpSearchShowResultGameForm() {
-		return new SearchShowResultGameForm();
+	/**
+	 * 順位表情報をスクレイピング.
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/ranking")
+	public String scrapeRanking() {
+
+		scrapeRankService.scrapeCentral();
+		scrapeRankService.scrapePacific();
+		return "Exercise.html";
 	}
 
-	@RequestMapping("/")
-	public String showHomePage(Model model, SearchShowResultGameForm form) {
-		List<ResultGame> resultGameList = showResultGameService.resultGameList("6-21");
-		model.addAttribute("resultGameList", resultGameList);
-		System.out.println(resultGameList);
-		String day = resultGameList.get(0).getDay().replace("-", "月");
-		model.addAttribute("day", day);
-
-		return "list.html";
-
-	}
-
-	@RequestMapping("/scrape")
-	public String scrape() {
-		scrapeService.scrape();
-		return "list.html";
+	/**
+	 * 試合結果情報をスクレイピング
+	 * 
+	 * @return
+	 * @throws ParseException
+	 */
+	@RequestMapping("/resultGame")
+	public String scrape() throws ParseException {
+		scrapeResultGameService.scrape();
+		return "Exercise.html";
 
 	}
 }

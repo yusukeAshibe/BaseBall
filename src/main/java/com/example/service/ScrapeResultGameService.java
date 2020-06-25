@@ -1,59 +1,61 @@
 package com.example.service;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import javax.xml.crypto.Data;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.example.domain.ResultGame;
-import com.example.repository.ScrapeRepository;
+import com.example.repository.GameResultRepository;
 
 /**
- * 情報のスクレイピング（現在開くたびに情報がインサートされてしまう。）
+ * 試合結果情報のスクレイピング
  * 
  * @author ashibe
  *
  */
 @Service
 @Transactional
-public class ScrapeService {
+public class ScrapeResultGameService {
 
 	@Autowired
-	private ScrapeRepository scrapeRepository;
+	private GameResultRepository scrapeRepository;
 
 	/**
-	 * サイトから情報をスクレイピングしてきてほしい形に成形.
+	 * サイトから情報をスクレイピングしてきてほしい形に成形.(毎日23:59:00にスクレイピング)
 	 * 
 	 * @return
+	 * @throws ParseException
 	 */
-	public void scrape() {
+	@Scheduled(cron = "0 0 * * * *", zone = "Asia/Tokyo") // 時間を指定してその時間に処理が行われる.
+	public void scrape() throws ParseException {
 
 		// PrintWriter p = null;
 		Document document = null;
-		// int num = 1;
+
 		try {
 			// p = new PrintWriter(new BufferedWriter(
 			// new OutputStreamWriter(new FileOutputStream("C:\\mercari\\train2.tsv"),
 			// "UTF8")));// 出力するファイルを指定
 
-			// document = Jsoup.connect("https://baseball.yahoo.co.jp/npb/schedule/").get();
-			document = Jsoup.connect("https://baseball.yahoo.co.jp/npb/schedule/?date=2020-06-21").get();
+			document = Jsoup.connect("https://baseball.yahoo.co.jp/npb/schedule/").get();
+			// document =
+			// Jsoup.connect("https://baseball.yahoo.co.jp/npb/schedule/?date=2020-06-24").get();
+			// document = Jsoup.connect("https://baseball-freak.com/game/").get();
 			// どこのサイト情報をスクレイピングしてくるのか指定(try/catchしないとエラーが出る）
 
 		} catch (IOException e) {
@@ -71,15 +73,16 @@ public class ScrapeService {
 		String[] result;
 		String[] day = days.text().split("（");
 		String today = day[0].replace("月", "-").replace("日", "");
+		today = "2020-0" + today;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = dateFormat.parse(today);
+
+		// System.out.println(date);
+		// System.out.println(today);
+
 		StringBuilder dateToday = new StringBuilder();
-		{
-
-		}
-		;
 		dateToday.append(today);
-		System.out.println(day);
-
-		// System.out.println(courses.text());
+		// System.out.println(day);
 
 		String teamList[] = { "巨人", "阪神", "中日", "ＤｅＮＡ", "ヤクルト", "広島", "オリックス", "楽天", "西武", "日本ハム", "ソフトバンク", "ロッテ" };
 
@@ -99,7 +102,7 @@ public class ScrapeService {
 			result = course.text().replace("-", " ").split(" "); // stringの配列にスクレイピングしてきた情報を入れる（半角スペース区切り）
 
 			System.out.println(Arrays.toString(result));// 半角スペース区切りでオブジェクトに入っているか確認
-			System.out.println(result[0]); // 球場の確認
+//			System.out.println(result[0]); // 球場の確認
 
 			stadium = result[i++];// オブジェクト内最初の文字列
 			team1 = result[i++];// 次の文字列
@@ -125,14 +128,14 @@ public class ScrapeService {
 			resultGame.setTeam2(team2);
 			resultGame.setScore1(Integer.parseInt(score1));
 			resultGame.setScore2(Integer.parseInt(score2));
-			resultGame.setDay(today);
+			resultGame.setDate(date);
 			resultGameList.add(resultGame);
 		}
-		System.out.println(resultGameList);
+		// System.out.println(resultGameList);
 		// 既にその日の情報が入っているか確認
-		List<ResultGame> todayResultGameList = scrapeRepository.ResultSearchByDay(today);// 既にその日の情報が入っているか確認
+		List<ResultGame> todayResultGameList = scrapeRepository.ResultSearchByDay(date);// 既にその日の情報が入っているか確認
 
-		System.out.println(todayResultGameList);
+		// System.out.println(todayResultGameList);
 		if (todayResultGameList.size() == 0) {
 			scrapeRepository.insert(resultGameList);
 		}
@@ -142,8 +145,4 @@ public class ScrapeService {
 
 	}
 
-//	public List<ResultGame> resultGameListSearchByDay(){
-//		
-//		
-//	}
 }

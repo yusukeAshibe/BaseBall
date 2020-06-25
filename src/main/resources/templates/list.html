@@ -28,60 +28,109 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <STYLE type="text/css">
-<!--
-BODY {
-	width: 800px;
-	height: 600px;
-}
+
+//body { 
+//	background-image: url(img/topBaseball.jpg);
+//	}
 
 TABLE {
-	position: absolute;
+	margin: auto;
 	top: 100px;
 	left: 100px;
 	width: 600px;
 	height: 400px;
 }
+
+li {
+	display: inline;
+}
 -->
 </STYLE>
+<script type="text/javascript">
+	window.onload = function() {
+		var date = new Date();
+		var yyyy = date.getFullYear();
+		var mm = ("0" + (date.getMonth() + 1)).slice(-2);
+		var dd = ("0" + date.getDate()).slice(-2);
+		//document.getElementById("date").value = yyyy + '-' + mm + '-' + dd;
+	}
+
+	function day() {
+		form.submit();
+	}
+</script>
 </head>
 
 <body>
+	<br>
 	<div style="text-align: center;">
-		<font size="4"><div th:text="${day}+'日の野球結果'"></div></font>
-		<form action="" method="post">
-			<input type="date" name="date" min="2020-06-19">
-		</form>
+		<font size=5>野球データサイト</font>
 	</div>
+	<div style="text-align: right;">
+		<font size="4"><span
+			th:text="'今日の日付:'+${#dates.format(date,'yyyy年M月dd日')}"></span></font>
+	</div>
+	<nav>
+		<ul>
+			<li><a th:href="@{/}">トップページ</a></li>
+			<li><a th:href="@{/ranking/showRanking}">順位表</a></li>
+
+
+		</ul>
+
+	</nav>
+
+
 	<div style="text-align: center;">
+		<font size="4"><span
+			th:text="${#dates.format(day,'yyyy年M月dd日')}+'の試合結果'"></span></font>
+	</div>
+	<form name="form" th:action="@{/}" method="post"
+		th:object="${searchShowResultGameForm}">
+		<div style="text-align: center;">
+			<input type="date" id="date" name="date" min="2020-06-19"
+				th:field="*{date}" onchange="day()">
+		</div>
+	</form>
+
+
+	<br>
+	<br>
+	<div style="text-align: center;" th:if="${resultGameList}==null">
+		<span th:text="${#dates.format(day,'yyyy年M月dd日')}+'の試合結果はありません'"></span>
+	</div>
+	<div style="text-align: center;" 　th:if="${resultGameList}!=null">
 
 		<table border="1">
 			<tbody>
 				<tr>
+
 					<th>
-						<div>球場</div>
+						<div style="text-align: center;">ホームチーム</div>
 					</th>
 					<th>
-						<div>ホームチーム</div>
+						<div style="text-align: center;">得点</div>
 					</th>
 					<th>
-						<div>得点</div>
+						<div style="text-align: center;">ビジターチーム</div>
 					</th>
 					<th>
-						<div>ビジターチーム</div>
+						<div style="text-align: center;">球場</div>
 					</th>
 				</tr>
 				<tr th:each="resultGame:${resultGameList}">
-					<td>
-						<div th:text="${resultGame.stadium}">球場名</div>
-					</td>
-					<td>
-						<div th:text="${resultGame.team1}">ホームチーム</div>
+
+					<td><a th:text="${resultGame.team1}"
+						th:href="@{'/teamDetail/show?teamName='+${resultGame.team1}}">ホームチーム</a>
 					</td>
 					<td>
 						<div th:text="${resultGame.score1}+'-'+${resultGame.score2}">ホームチーム得点</div>
 					</td>
+					<td><a th:text="${resultGame.team2}"
+						th:href="@{'/teamDetail/show?teamName='+${resultGame.team2}}">ビジターチーム</a>
+					</td>
 					<td>
-						<div th:text="${resultGame.team2}">ビジターチーム</div>
+						<div th:text="${resultGame.stadium}">球場名</div>
 					</td>
 
 				</tr>
