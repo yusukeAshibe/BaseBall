@@ -33,7 +33,7 @@ public class ScrapeRankService {
 	/**
 	 * セリーグの順位表情報をスクレイピング
 	 */
-	@Scheduled(cron = "0 0 * * * *", zone = "Asia/Tokyo")
+	@Scheduled(cron = "0 59 23 * * *", zone = "Asia/Tokyo")
 	public void scrapeCentral() {
 
 		Document document = null;
@@ -146,7 +146,7 @@ public class ScrapeRankService {
 	/**
 	 * パリーグの順位表情報をスクレイピング
 	 */
-	@Scheduled(cron = "0 * * * * *", zone = "Asia/Tokyo")
+	@Scheduled(cron = "0 59 23 * * *", zone = "Asia/Tokyo")
 	public void scrapePacific() {
 
 		Document document = null;

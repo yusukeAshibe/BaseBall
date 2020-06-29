@@ -11,10 +11,36 @@ TABLE {
 	width: 1000px;
 	height: 100px;
 }
+
+li {
+	display: inline;
+}
 -->
 </STYLE>
 </head>
 <body>
+
+
+	<div class="navbar-header">
+		<br>
+		<div style="text-align: center;">
+			<font size=5>野球データサイト</font>
+		</div>
+		<div style="text-align: right;">
+			<font size="4"><span
+				th:text="'今日の日付:'+${#dates.format(today,'yyyy年M月dd日')}"></span></font>
+		</div>
+		<nav>
+			<ul>
+				<li><a th:href="@{/}">トップページ</a></li>
+				<li><a th:href="@{/ranking/showRanking}">順位表</a></li>
+			</ul>
+
+		</nav>
+	</div>
+
+
+
 	<h2 style="text-align: center;" th:text="${teamDetail.teamName}+'の詳細'"></h2>
 	<h3 style="text-align: center;"
 		th:text="'今日の日付:'+${#dates.format(date,'yyyy年M月dd日')}+'現在'"></h3>
@@ -135,33 +161,74 @@ TABLE {
 			</th>
 		</tr>
 		<tr th:each="resultGame:${teamResultGameList}">
-
 			<td>
 				<div th:text="${#dates.format(resultGame.date,'yyyy年M月dd日')}"></div>
 			</td>
+			<td><span th:text="${resultGame.winOrLose}"></span></td>
 			<td>
-				<div th:each="winOrLose:${winOrLoseList}">
-					<span th:text="${winOrLose}"></span>
-				</div>
-			</td>
-
-			<td>
-
 				<div th:text="${resultGame.score1}+'-'+${resultGame.score2}"></div>
 			</td>
 			<td>
-				<div th:each="oppounent:${oppounentList}">
-					<span th:text="${oppounent}"></span>
-				</div>
+				<div th:text="${resultGame.opponent}"></div>
 			</td>
 			<td>
 				<div th:text="${resultGame.stadium}"></div>
 			</td>
 
 		</tr>
-
-
-
 	</tbody>
 </table>
+
+<!-- 
+<div th:each="winOrLose:${winOrLoseList}">
+	<span th:text="${winOrLose}"></span>
+	<div th:each="oppounent:${oppounentList}">
+					<span th:text="${oppounent}"></span>
+				</div>
+ -->
+<h3 style="text-align: center;">順位遷移</h3>
+<canvas id="myLineChart"></canvas>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
+<script>
+  var ctx = document.getElementById("myLineChart");
+  var rank=[ [(${rank})] ];
+  //var gameDate=[ [(${gameDate})] ];
+  var myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['23','24','25'],
+      datasets: [
+        {
+          label: '順位',
+          data: rank,
+          borderColor: "rgba(255,0,0,1)",
+          backgroundColor: "rgba(0,0,0,0)",
+          lineTension: 0,
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: ''
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+        	reverse: true,
+            suggestedMax: 6,
+            suggestedMin: 1,
+            stepSize: 1,
+            callback: function(value, index, values){
+              return  value +  '位'
+            }
+          }
+        }]
+      },
+    }
+  });
+  </script>
+
 </html>

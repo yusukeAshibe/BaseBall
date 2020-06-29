@@ -41,7 +41,7 @@ public class ScrapeResultGameService {
 	 * @return
 	 * @throws ParseException
 	 */
-	@Scheduled(cron = "0 0 * * * *", zone = "Asia/Tokyo") // 時間を指定してその時間に処理が行われる.
+	@Scheduled(cron = "0 59 23 * * *", zone = "Asia/Tokyo") // 時間を指定してその時間に処理が行われる.
 	public void scrape() throws ParseException {
 
 		// PrintWriter p = null;
@@ -52,9 +52,8 @@ public class ScrapeResultGameService {
 			// new OutputStreamWriter(new FileOutputStream("C:\\mercari\\train2.tsv"),
 			// "UTF8")));// 出力するファイルを指定
 
-			document = Jsoup.connect("https://baseball.yahoo.co.jp/npb/schedule/").get();
-			// document =
-			// Jsoup.connect("https://baseball.yahoo.co.jp/npb/schedule/?date=2020-06-24").get();
+			// document = Jsoup.connect("https://baseball.yahoo.co.jp/npb/schedule/").get();
+			document = Jsoup.connect("https://baseball.yahoo.co.jp/npb/schedule/?date=2020-06-25").get();
 			// document = Jsoup.connect("https://baseball-freak.com/game/").get();
 			// どこのサイト情報をスクレイピングしてくるのか指定(try/catchしないとエラーが出る）
 

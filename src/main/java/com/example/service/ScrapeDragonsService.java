@@ -2,7 +2,6 @@ package com.example.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -19,16 +18,14 @@ import com.example.repository.BatterRepository;
 import com.example.repository.PitcherRepository;
 
 /**
- * 読売ジャイアンツの選手情報をスクレイプ.
- * 
+ * 中日ドラゴンズの選手情報をスクレイプ.
  * 
  * @author ashibe
  *
  */
 @Service
 @Transactional
-public class ScrapeGiantsService {
-
+public class ScrapeDragonsService {
 	@Autowired
 	private PitcherRepository pitcherRepository;
 	@Autowired
@@ -41,7 +38,7 @@ public class ScrapeGiantsService {
 		Document document = null;
 
 		try {
-			document = Jsoup.connect("https://baseball.yahoo.co.jp/npb/teams/1/memberlist?kind=p").get();
+			document = Jsoup.connect("https://baseball.yahoo.co.jp/npb/teams/4/memberlist?kind=p").get();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -378,7 +375,7 @@ public class ScrapeGiantsService {
 			pitcher.setKBB(Double.parseDouble(KBB));
 			pitcher.setWHIP(Double.parseDouble(WHIP));
 			// 選手の所属チームを入れる
-			pitcher.setTeamName("巨人");
+			pitcher.setTeamName("中日");
 			// 最初の行と最後の行を省く（文字列の情報は入れない）
 			if (!pitcher.getUniformNumber().equals("背番号")) {
 				pitcherList.add(pitcher);
@@ -399,7 +396,7 @@ public class ScrapeGiantsService {
 		Document document = null;
 
 		try {
-			document = Jsoup.connect("https://baseball.yahoo.co.jp/npb/teams/1/memberlist?kind=b").get();
+			document = Jsoup.connect("https://baseball.yahoo.co.jp/npb/teams/4/memberlist?kind=b").get();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -709,7 +706,7 @@ public class ScrapeGiantsService {
 			batter.setOPS(Double.parseDouble(OPS));
 			batter.setScoringArea(Double.parseDouble(scoringArea));
 			batter.setError(Integer.parseInt(error));
-			batter.setTeamName("巨人");
+			batter.setTeamName("中日");
 
 			// 最初の行と最後の行を省く（文字列の情報は入れない）
 			if (!batter.getUniformNumber().equals("背番号")) {

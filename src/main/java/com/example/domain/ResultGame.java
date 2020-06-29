@@ -31,7 +31,15 @@ public class ResultGame {
 	 */
 	private Integer score2;
 
+	/**
+	 * 勝敗
+	 */
 	private String winOrLose;
+
+	/**
+	 * 相手
+	 */
+	private String opponent;
 
 	/**
 	 * 試合日程
@@ -86,10 +94,26 @@ public class ResultGame {
 		this.score2 = score2;
 	}
 
+	public String getWinOrLose() {
+		return winOrLose;
+	}
+
+	public void setWinOrLose(String winOrLose) {
+		this.winOrLose = winOrLose;
+	}
+
+	public String getOpponent() {
+		return opponent;
+	}
+
+	public void setOpponent(String opponent) {
+		this.opponent = opponent;
+	}
+
 	@Override
 	public String toString() {
 		return "ResultGame [stadium=" + stadium + ", team1=" + team1 + ", team2=" + team2 + ", score1=" + score1
-				+ ", score2=" + score2 + ", winOrLose=" + winOrLose + ", date=" + date + "]";
+				+ ", score2=" + score2 + ", winOrLose=" + winOrLose + ", opponent=" + opponent + ", date=" + date + "]";
 	}
 
 }

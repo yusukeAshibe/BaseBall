@@ -12,6 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.domain.ResultGame;
 import com.example.repository.GameResultRepository;
 
+/**
+ * 試合結果情報を取得するサービス.
+ * 
+ * @author ashibe
+ *
+ */
 @Service
 @Transactional
 public class ShowResultGameService {

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://wwww.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title> -->
+<STYLE type="text/css">
+li {
+	display: inline;
+}
+</STYLE>
+</head>
+<body>
+	<nav class="navbar navbar-default" th:fragment="header">
+		<div class="navbar-header">
+			<br>
+			<div style="text-align: center;">
+				<font size=5>野球データサイト</font>
+			</div>
+			<div style="text-align: right;">
+				<font size="4"><span
+					th:text="'今日の日付:'+${#dates.format(today,'yyyy年M月dd日')}"></span></font>
+			</div>
+			<nav>
+				<ul>
+					<li><a th:href="@{/}">トップページ</a></li>
+					<li><a th:href="@{/ranking/showRanking}">順位表</a></li>
+				</ul>
+
+			</nav>
+		</div>
+	</nav>
+</body>
+</html>

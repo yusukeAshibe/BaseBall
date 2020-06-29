@@ -79,7 +79,6 @@ public class GameResultRepository {
 		String sql = "select * from result_games  where team1=:teamName or team2=:teamName";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("teamName", teamName);
 		List<ResultGame> teamResultList = template.query(sql, param, RESULTGAME_ROW_MAPPER);
-		System.out.println(sql);
 		return teamResultList;
 
 	}

@@ -40,7 +40,7 @@ public class RankingTableRepository {
 			String sql = "insert into centralLeague_ranking(rank,game,teamName,win,lose,drow,winRate,difference,remaindingMatch,score,goal,homerun,steal,battingAverage,defenceRate,date)  \r\n"
 					+ "values(:rank,:game,:teamName,:win,:lose,:drow,:winRate,:difference,:remaindingMatch,:score,:goal,:homerun,:steal,:battingAverage,:defenceRate,:date)";
 			SqlParameterSource param = new BeanPropertySqlParameterSource(central);
-			System.out.println("ここ通る");
+
 			template.update(sql, param);
 		}
 
@@ -79,6 +79,20 @@ public class RankingTableRepository {
 			CentralLeagueRanking todayTeamDetail = teamDetailList.get(0);
 			return todayTeamDetail;
 		}
+	}
+
+	/**
+	 * セリーグの順位表のためのリスト（各球団）
+	 * 
+	 * @param teamName
+	 * @return
+	 */
+	public List<CentralLeagueRanking> CentralLeagueRankingList(String teamName) {
+		String sql = "select * from centralLeague_ranking where teamName=:teamName order by date";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("teamName", teamName);
+		List<CentralLeagueRanking> teamRankList = template.query(sql, param, CENTRALLEAGU_ROW_MAPPER);
+		return teamRankList;
+
 	}
 
 	// ここからパリーグの情報
@@ -132,5 +146,19 @@ public class RankingTableRepository {
 			PacificLeagueRanking todayteamDetail = pacificLeagueList.get(0);
 			return todayteamDetail;
 		}
+	}
+
+	/**
+	 * パリーグの順位表のためのリスト（1球団）
+	 * 
+	 * @param teamName
+	 * @return
+	 */
+	public List<PacificLeagueRanking> PacificLeagueRankingList(String teamName) {
+		String sql = "select * from pacificLeague_ranking where teamName=:teamName order by date";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("teamName", teamName);
+		List<PacificLeagueRanking> teamRankList = template.query(sql, param, PACIFICLEAGU_ROW_MAPPER);
+		return teamRankList;
+
 	}
 }

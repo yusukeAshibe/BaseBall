@@ -63,4 +63,88 @@ public class TeamDetailService {
 
 	}
 
+	/**
+	 * セリーグの選択された球団の順位情報を取得
+	 * 
+	 * @param teamName
+	 * @return
+	 */
+	public StringBuilder CentralTeamrankListSearchByTeamName(String teamName) {
+		List<CentralLeagueRanking> teamRankList = rankingTableRepository.CentralLeagueRankingList(teamName);
+		StringBuilder teamRankCentral = new StringBuilder();
+		int count = 0;
+		for (CentralLeagueRanking teamRank : teamRankList) {
+			teamRankCentral.append(teamRank.getRank());
+			count++;
+			if (count != teamRankList.size()) {
+				teamRankCentral.append(",");
+			}
+		}
+		return teamRankCentral;
+		// return teamRankList;
+	}
+
+	/**
+	 * パリーグの選択された球団の順位情報を取得
+	 * 
+	 * @param teamName
+	 * @return
+	 */
+	public StringBuilder PacificTeamrankListSearchByTeamName(String teamName) {
+		List<PacificLeagueRanking> teamRankList = rankingTableRepository.PacificLeagueRankingList(teamName);
+		StringBuilder teamRankPacific = new StringBuilder();
+		int count = 0;
+		for (PacificLeagueRanking teamRank : teamRankList) {
+			teamRankPacific.append(teamRank.getRank());
+			count++;
+			if (count != teamRankList.size()) {
+				teamRankPacific.append(",");
+			}
+		}
+		return teamRankPacific;
+		// return teamRankList;
+	}
+
+	/**
+	 * セリーグの試合の日付けを取得
+	 * 
+	 * @param teamName
+	 * @return
+	 */
+	public StringBuilder CentralGameDateListSearchByTeamName(String teamName) {
+		List<CentralLeagueRanking> teamRankList = rankingTableRepository.CentralLeagueRankingList(teamName);
+		StringBuilder gameDayCentral = new StringBuilder();
+		int count = 0;
+		for (CentralLeagueRanking teamRank : teamRankList) {
+			gameDayCentral.append(teamRank.getRank());
+			count++;
+			if (count != teamRankList.size()) {
+				gameDayCentral.append(",");
+			}
+		}
+		return gameDayCentral;
+		// return teamRankList;
+	}
+
+	/**
+	 * パリーグの試合の日付けを取得(順位遷移表に必要)
+	 * 
+	 * @param teamName
+	 * @return
+	 */
+	public StringBuilder PacificGameDateListSearchByName(String teamName) {
+		List<PacificLeagueRanking> teamRankList = rankingTableRepository.PacificLeagueRankingList(teamName);
+		StringBuilder gameDayPacific = new StringBuilder();
+		int count = 0;
+		for (PacificLeagueRanking teamRank : teamRankList) {
+			gameDayPacific.append(teamRank.getDate());
+			count++;
+			if (count != teamRankList.size()) {
+				gameDayPacific.append(",");
+			}
+		}
+		return gameDayPacific;
+
+	}
+
 }
